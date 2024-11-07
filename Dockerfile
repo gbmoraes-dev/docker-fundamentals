@@ -1,12 +1,16 @@
 FROM node:22-slim
 
-RUN npm install -g pnpm
+ENV PNPM_HOME="/pnpm"
+
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN corepack enable
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
+COPY package.json pnpm-lock.yaml ./
 
-RUN pnpm install
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 
