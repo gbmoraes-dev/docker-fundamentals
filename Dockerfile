@@ -1,4 +1,4 @@
-FROM node:22-slim
+FROM node:22-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 
@@ -10,12 +10,30 @@ WORKDIR /usr/src/app
 
 COPY package.json pnpm-lock.yaml ./
 
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+FROM base AS prod-deps
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+FROM base AS build
 
 COPY . .
 
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
 RUN pnpm run build
+
+FROM node:22-alpine AS release
+
+RUN corepack enable
+
+WORKDIR /usr/src/app
+
+COPY --from=prod-deps /usr/src/app/node_modules ./node_modules
+
+COPY --from=prod-deps /usr/src/app/package.json ./package.json
+
+COPY --from=build /usr/src/app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["pnpm", "run", "start"]
+CMD ["pnpm", "run", "start:prod"]
