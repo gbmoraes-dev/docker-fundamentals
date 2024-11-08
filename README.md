@@ -1,99 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div align="center">
+  <img src="https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png" alt="Docker logo" width="100""/>
+  <h1>Docker Fundamentals</h1>
+</div>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto foi desenvolvido como parte do curso Ignite da Rocketseat, na trilha de DevOps, com o objetivo de dominar os fundamentos da containerização usando Docker. Ao longo do projeto, foram abordadas técnicas essenciais para criar, configurar e otimizar containers, aplicando práticas recomendadas para o desenvolvimento de ambientes em Docker.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 💡 Sobre o Projeto
 
-## Description
+Utilizamos um boilerplate de NestJS para aprender na prática como containerizar uma aplicação Node.js. O projeto serve como material de estudo para entender conceitos fundamentais do Docker, incluindo:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Criação e otimização de Dockerfiles
+- Multi-stage builds
+- Gerenciamento de containers com Docker Compose
+- Configuração de redes (networks)
+- Persistência de dados com volumes
+- Integração com banco de dados (MySQL)
 
-## Project setup
+## 🛠 Tecnologias Utilizadas
 
+- NestJS
+- Docker e Docker Compose
+- MySQL
+- pnpm (gerenciador de pacotes)
+- TypeORM
+
+## 🚀 Estrutura do Projeto
+
+O projeto utiliza uma estrutura multi-stage build para otimização da imagem final:
+
+- **Base**: Configuração inicial com Node.js e pnpm
+- **Prod-deps**: Instalação de dependências de produção
+- **Build**: Compilação do código
+- **Release**: Imagem final otimizada
+
+## 🗄 Configuração do Docker
+
+### Docker Compose
+
+O projeto utiliza Docker Compose para orquestrar dois serviços:
+
+1. **Aplicação (app)**:
+   - Porta: 3001 (host) -> 3000 (container)
+   - Construída a partir do Dockerfile local
+
+2. **Banco de Dados (mysql)**:
+   - MySQL 8
+   - Porta: 3306
+   - Volume persistente para dados
+   - Variáveis de ambiente configuradas para desenvolvimento
+
+### Networks
+
+- Network bridge dedicada para comunicação entre os containers
+- Isolamento apropriado dos serviços
+
+### Volumes
+
+- Volume dedicado para persistência dos dados do MySQL
+
+## 🚦 Como Executar
+
+1. Certifique-se de ter Docker e Docker Compose instalados usando:
 ```bash
-$ pnpm install
+docker -v
+docker-compose -v
+```
+   
+2. Clone o repositório:
+```bash
+git clone git@github.com:gbmoraes-dev/docker-fundamentals.git
 ```
 
-## Compile and run the project
-
+3. Entre na pasta:
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cd docker-fundamentals
 ```
 
-## Run tests
-
+4. Por fim, execute:
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+docker-compose up --build -d
 ```
 
-## Deployment
+A aplicação estará disponível em `http://localhost:3001`
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 📝 Aprendizados
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Durante o desenvolvimento deste projeto, foram abordados diversos conceitos importantes:
 
-```bash
-$ pnpm install -g mau
-$ mau deploy
-```
+- Boas práticas na construção de imagens Docker
+- Otimização de builds com cache e multi-stage
+- Gerenciamento de dependências em containers
+- Comunicação entre serviços containerizados
+- Persistência de dados com volumes Docker
+- Configuração de variáveis de ambiente
+- Dockerização de aplicações Node.js
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🎓 Sobre o Curso
 
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Este projeto integra o módulo de DevOps do curso Ignite da Rocketseat, proporcionando uma abordagem prática para o aprendizado de containers. Ao longo do módulo, exploramos as melhores práticas de containerização de aplicações, entendendo como otimizar, gerenciar e orquestrar containers de forma eficiente.
