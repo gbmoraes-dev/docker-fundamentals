@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: app
+    ports:
+      - 3001:3000
+    depends_on:
+      - mysql
+    networks:
+    - network-fundamentals
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=docker-fundamentals
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=root
+    networks:
+      - network-fundamentals
+
+networks:
+  network-fundamentals:
+    name: network-fundamentals
+    driver: bridge
+
+volumes:
+  db:
+    name: volumes-fundamentals
